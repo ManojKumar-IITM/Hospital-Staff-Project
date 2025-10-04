@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#container {
+    display: flex;
+    
+}
+
+
+#leftside {
+    width:  40vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #29a3a8;
+    background-image: url('../images/medicalimage4.jpeg');
+    background-repeat: no-repeat;
+    background-size: 80% 65%;
+    background-position: center center;
+}
+
+#leftside h1 {
+    font-size: 200px;
+}
+
+#rightside {
+    width: 60vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #EFD4B2;
+}
+
+#formcontainer {
+    
+    background-color: white;
+    height: 60%;
+    width: 40%;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 50px 50px 50px rgba(0, 0, 0, 0.3) ;
+       
+}
+
+#heading {
+    display:flex;
+    justify-content: center;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border: 2px solid black;
+    border-radius: 5px;
+    
+    
+}
+
+#heading h1 {
+    font-size: 30px;
+}
+
+.inputboxes {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    gap:10px;
+}
+
+.input-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+.loginboxes {
+    border-radius: 5px;
+    height: 30px;
+    width: 70%;
+    padding-left: 10px;
+
+}
+
+
+#submitbutton {
+    margin-top: 10px;
+    height: 30px;
+    width: 20%;
+    font-size: 100%;
+    border-radius:5px;
+}
+
+#signuplinkup {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    font-weight: 500;
+}
