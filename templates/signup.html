@@ -17,7 +17,7 @@
                <div id="heading">
                     <h1>Enter Details</h1>
                </div>
-               <form method="POST" >
+               <form method="POST" action="{{url_for('controllers.signup')}}" >
                     <div class="inputbox">
                               <div class="name">
                                    <div class="input-row">
@@ -39,13 +39,13 @@
                                    <input class="loginboxes" type="password" name="password" placeholder="Password">
                               </div>
 
-                              <input id="submitbutton" type="submit" value="Register">
+                              <input id="submitbutton" type="submit" value="Register"/>
                     </div>
                </form>
 
                <div id="signuplinkup">
                     <h4>Registered =></h4>
-                    <a href="{{url_for('login')}}">Log in</a>
+                    <a href="{{url_for('controllers.login')}}">Log in</a>
                </div>
                
 
