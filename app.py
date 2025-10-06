@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template ,request
+from flask_migrate import Migrate
 from application.database import db
 from application.controllers import *
 from application.models import *
@@ -11,12 +12,14 @@ db_path = os.path.join(BASE_DIR, 'db_directory', 'Hospital_staff_database.db')
 
 
 
-
+migrate=Migrate()
 def create_app():
     app = Flask(__name__ , template_folder='templates')
+    app.secret_key= 'thisisaverystrongsecretkeynobodycannotfindit'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
     db.init_app(app)
-    app.register_blueprint(controllers)
+    migrate.init_app(app,db)                #for database updation (changes updation)
+    app.register_blueprint(controllers)     #to attack controllers to app.py
 
     return app
 
@@ -32,10 +35,9 @@ app = create_app()
 
 
 
+
 if __name__== '__main__':
 
-    with app.app_context():
-        from application import models  # Make sure Admin class is imported
-        db.create_all()
+    
     
     app.run(host='0.0.0.0', debug=True)

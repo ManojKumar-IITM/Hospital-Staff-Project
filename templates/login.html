@@ -39,9 +39,23 @@
                     <h4>Not Registered => </h4>
                     <a href="{{url_for('controllers.signup')}}" >Sign Up</a>
                </div>
-               
 
+               <div>
+                    {% with messages= get_flashed_messages(with_categories=true) %}
+                         {% if messages %}
+                              {% for category, message in messages %}
+                                   <div class="alert alert-{{category}}">
+                                        {{message}}
+                                   </div>
+                              {% endfor%}
+                         {% endif %}        
+                    {% endwith %}        
+               </div>
           </div>
+
+
+
+
      </div>
    
 
