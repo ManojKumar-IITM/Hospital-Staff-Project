@@ -1,5 +1,5 @@
-from flask import Flask,request,render_template,Blueprint,flash,redirect,url_for
-from .models import Patients,Admin,Doctors
+from flask import Flask,request,render_template,Blueprint,flash,redirect,url_for,session
+from .models import Members
 from .database import db
 
 
@@ -22,23 +22,30 @@ def login():
     elif request.method=='POST':
         username= request.form.get('username')
         password= request.form.get('password')
+ 
+        #storing details in session to access while redirecting
+        session['username'] = username
+        session['password'] = password
+
+
         # return f'hello {username}'
-
-        user = Admin.query.filter_by(username=username).first()
-        if user and user.password == password:
-            return render_template('Admin.html', username=user.username)
-
-        user = Doctors.query.filter_by(username=username).first()
-        if user and user.password == password:
-            return render_template('doctor.html', username=user.username)
-
-        user = Patients.query.filter_by(username=username).first()
-        if user and user.password == password:
-            return render_template('patient.html', username=user.username)
-
-        # Note: do NOT reveal which type failed, for security
-        flash('Invalid username or password','danger')
+        user = Members.query.filter_by(username=username).first()
+        if user and user.password==password:
+            if user.role == 'admin':
+                session['firstname']= user.first_name
+                return redirect(url_for('controllers.admin'))
+            elif user.role == 'doctor':
+                return redirect(url_for('controllers.doctor'))
+            elif user.role== 'patient':
+                return redirect(url_for('controllers.patient'))
+            else:
+                flash('Invalid username or password','danger')
+                return render_template('login.html')
+        flash("No user with the User_name",'danger')
         return render_template('login.html')
+        # Note: do NOT reveal which type failed, for security
+        
+        
         
 
 @controllers.route('/signup' , methods = ["GET","POST"])
@@ -51,11 +58,12 @@ def signup():
         username=  request.form.get('username')
         password=  request.form.get('password')
 
-        new_patient = Patients(
+        new_patient = Members(
                              username=username,
                              password=password,
                              first_name=firstname,
-                             last_name=lastname
+                             last_name=lastname,
+                             role= 'patient'
         )
         try:
             db.session.add(new_patient)
@@ -68,6 +76,42 @@ def signup():
 
         flash("Signup Succesfull",'succes')
         return redirect(url_for('controllers.login'))
+    
+@controllers.route('/Admin', methods=['GET','POST'])
+def admin():
+
+    if request.method=='GET':
+        username= session['username']
+        first_name= session.get('firstname')
+        total_doctors = Members.query.filter_by(role='doctor').count()
+        total_patients = Members.query.filter_by(role='patient').count()
+        doctors= Members.query.filter_by(role='doctor')
+        patients= Members.query.filter_by(role='patient')
+        
+        return render_template('admin.html',
+                               username=username,
+                               first_name=first_name,
+                               total_doctors=total_doctors,
+                               total_patients=total_patients,
+                               doctors=doctors,
+                               patients=patients)
+        
+    
+
+@controllers.route('/Doctor', methods=['GET','POST'])
+def doctor():
+
+    if request.method=='GET':
+        username= session['username']
+        return render_template('doctor.html',username=username)
+    
+
+@controllers.route('/Patient', methods=['GET','POST'])
+def patient():
+
+    if request.method=='GET':
+        username= session['username']
+        return render_template('patient.html',username=username)
        
 
 

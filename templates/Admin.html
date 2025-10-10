@@ -1,9 +1,119 @@
 {% extends "base.html" %}
-{% block title %} {{username}} {% endblock %}
+{% block title %} 
+    {{username}} 
+{% endblock %}
 
 
-
+{% block link %}
+    <link rel="stylesheet" href="{{url_for('static',filename='css/admin.css')}}">
+{% endblock %}
 
 {% block content %}
-<h1>Welcome, {{username}}</h1>
+    <header class="dashboard-header">
+            <div class="header-left">
+                <h1>{{first_name}}'s Dashboard</h1>
+                <p>Welcome back, Admin</p>
+            </div>
+            <div class="header-right">
+                <input type="search" placeholder="Search patients..." />
+                <i class="fa-regular fa-bell notification-icon" title="Notifications"></i>
+                <img src="" alt="Avatar" class="avatar" />
+            </div>
+    </header>
+
+    <section class="stats-cards">
+            <div class="statbox">
+                <div class="statboxupper">
+                    <h4 class="icon"><i class="fa-solid fa-user-doctor stat-icon"></i></h4>
+                    <div class="statdetails">
+                        <h4 >Registered Doctors</h4>
+                        <h5>{{total_doctors}}</h5> 
+                    </div>
+                    <button id="doctorviewallbutton">Register Doctor</button>   
+                </div>
+                <div class="statboxlower">
+                    {% for doctor in doctors %}
+                        <div class="doclist" >
+                            <h6>{{doctor.first_name}}</h6>
+                            <div class="doclistbutton">
+                                <button style="color: rgb(255, 255, 3); background-color: rgba(227, 227, 54, 0.1); border: 2px solid yellow ">edit</button>
+                                <button style="color: rgb(249, 11, 11); background-color: rgb(255, 2, 2,0.2); border: 2px solid red ">delete</button>
+                                <button style="color: black; background-color: rgb(4, 3, 3,0.1);">blacklist</button>
+                            </div>
+                        </div>
+                    {%endfor%}
+                </div>
+            </div>
+              
+           
+                
+            
+            
+            
+            <div class="statbox">
+                <div class="statboxupper">
+                    <h4 class="icon"><i class="fa-solid fa-user-group stat-icon"></i></h4>
+                    <div class="statdetails">
+                        <h4>Registered Patients</h4>
+                        <h5>{{total_patients}}</h5>
+                    </div>
+                    <button id="doctorviewallbutton">Register Patient</button> 
+                </div>
+                <div class="statboxlower">
+                    {% for patient in patients %}
+                        <div class="doclist" >
+                            <h6>{{patient.first_name}}</h6>
+                            <div class="doclistbutton">
+                                <button style="color: rgb(255, 255, 3); background-color: rgba(227, 227, 54, 0.1); border: 2px solid yellow ">edit</button>
+                                <button style="color: rgb(249, 11, 11); background-color: rgb(255, 2, 2,0.2); border: 2px solid red ">delete</button>
+                                <button style="color: black; background-color: rgb(4, 3, 3,0.1);">blacklist</button>
+                            </div>
+                        </div>
+                    {%endfor%}
+                </div>
+            </div>
+            
+            
+                
+            
+            
+            <div class="statbox">
+                <div class="statboxupper">
+                    <h4 class="icon"><i class="fa-regular fa-calendar-check stat-icon"></i></h4>
+                    <div class="statdetails">
+                        <h4>Today's Appointments</h4>
+                        
+                    </div>
+                </div>
+                <div class="statboxlower">
+                    <h6>No Appointments yet...</h6>
+                </div>
+            </div>
+            
+            
+                
+            
+            
+            <div class="statbox">
+                <div class="statboxupper">
+                    <h4 class="icon"><i class="fa-solid fa-file-lines stat-icon"></i></h4>
+                    <div class="statdetails">
+                        <h4>Pending Reviews</h4>
+                        
+                    </div>
+                </div>
+                <div class="statboxlower">
+                    <h6> No Review yet...</h6>
+                </div>
+            </div>
+                 
+    </section>
+
+
+
+    
+
+
+
+
 {% endblock %}
