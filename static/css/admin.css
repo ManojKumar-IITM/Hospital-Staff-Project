@@ -84,6 +84,7 @@ body {
   padding: 24px 32px;
   background: #fff;
   border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
   
 }
 .statbox {
@@ -97,8 +98,14 @@ body {
   box-shadow: 0 1px 4px rgb(0 0 0 / 0.4);
   transition: box-shadow 0.3s;
   font-weight: 500; 
-  max-height: 500px;
+  max-height: 450px;
 }
+
+.appointments {
+  flex:1.8;
+}
+
+
 
 .statboxupper {
   display: flex;
@@ -117,18 +124,18 @@ width: 40%;
 }
 
 
-#doctorviewallbutton {
+#registerbutton {
 margin-left: 20%;
 margin-top: 6px;
 height: 50%;
 width: 40%;   
 border: 2px solid rgb(11, 210, 114);
 border-radius: 5%;
-background-color: rgb(11, 210, 114);
-color: white
+background-color: rgb(11, 210, 114,0.6);
+color: rgb(6, 0, 0)
 }
 
-#doctorviewallbutton:hover {
+#registerbutton:hover {
   box-shadow: 0 4px 10px rgba(8, 1, 21, 0.7);
 
 }
@@ -141,7 +148,23 @@ color: white
   border: 2px solid green;
 }
 
-.doclist {
+.appointmentlower {
+   
+}
+
+.patienthistorybutton {
+    padding: 3px 5px 3px 5px;
+    border-radius: 10px;
+    border: 2px solid blue;
+    color: blue;
+    background-color: rgb(59, 2, 244,0.1);
+}
+
+.patienthistorybutton:hover {
+     box-shadow: 0 4px 10px rgba(8, 1, 21, 0.7);
+}
+
+.divlist {
   display: flex;
   background-color: white;
   padding: 10px;
@@ -152,170 +175,148 @@ color: white
   margin-bottom: 5px;
 }
 
-.doclist button {
+.divlist button {
   padding: 4px;
   border-radius: 10px;
   background-color: white;
 
 }
 
-.doclist button:hover {
+.divlist button:hover {
   box-shadow: 0 4px 10px rgba(8, 1, 21, 0.7);
 }
 
 
+table th, table td {
+    padding: 12px 20px; /* 12px top/bottom, 20px left/right */
+}
+
+table th ,td {
+    border: 1px solid #222;   /* Dark border for headings */
+    padding: 12px 20px;       /* Optional, for spacing */
+    background: #f9f9f9;      /* Optional, subtle background */
+}
 
 
 
 
-
-
-
-
-/* Main-card styling */
-
-
-.main-cards {
+/* Additional Cards Css */
+.additional-cards {
   display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
   padding: 24px 32px;
-  gap: 24px;
   background: #fff;
-  justify-content: space-around;
-  height: 500px;
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+  
+  
 }
 
-.card {
-  background: #f3f4f6;
-  border-radius: 12px;
-  padding: 20px;
-  width: 33%;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
-}
-
-.quick-actions h3,
-.appointments h3,
-.patient-history h3 {
-  margin-top: 0;
-  margin-bottom: 16px;
-  font-weight: 700;
-  color: #334155;
+.lowercards {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
+  background-color: #f3f4f6;
+  margin: 10px 0 0 0px;
+  flex: 2.15;
+  border-radius: 10px;
+  padding:  32px  ;
+  min-height: 350px;
+  gap: 10px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.4);
+}
+
+.patienthistory {
+  flex: 1.8;
+}
+
+.adddoctor {
+  justify-content: center;
   align-items: center;
 }
 
-.view-all {
-  font-size: 0.85rem;
-  color: #7c3aed;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.view-all:hover {
-  text-decoration: underline;
-}
-
-
-
-
-.action-btn {
-  width: 100%;
-  display: block;
-  text-align: left;
-  margin-bottom: 12px;
-  padding: 12px 16px;
-  border-radius: 8px;
-  border: none;
-  font-size: 0.9rem;
-  cursor: pointer;
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 0.07);
-  transition: background 0.25s;
-}
-
-.action-btn small {
-  display: block;
-  font-weight: 400;
-  font-size: 0.7rem;
-  color: #475569;
-  margin-top: 2px;
-}
-
-.action-btn.blue {
-  background: #3b82f6;
-  color: white;
-}
-
-.action-btn.blue:hover {
-  background: #2563eb;
-}
-
-.action-btn.green {
-  background: #10b981;
-  color: white;
-}
-
-.action-btn.green:hover {
-  background: #059669;
-}
-
-.action-btn.purple {
-  background: #8b5cf6;
-  color: white;
-}
-
-.action-btn.purple:hover {
-  background: #6d28d9;
-}
-
-
-.quick-actions {
-    max-width: 15%;
-}
 
 
 
 
 
+/* add doctor div css  */
 
-.patient-history {
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
-}
-
-.patient-history h3 {
-  color: #334155;
-  font-weight: 700;
-}
-
-.patient-history .search-bar {
+.doctor-icon {
+  flex: 0 0 40%;
   display: flex;
-  margin: 12px 0 24px 0;
-  gap: 8px;
+  justify-content: center;
+  align-items: center;
 }
 
-.patient-history input[type=search] {
+.doctor-icon img {
+  height: 100%;
+  width: 80%;
+  max-width: 250px;
+  
+}
+
+
+
+.doctor-form h2 {
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+  color: #222;
+}
+
+.doctor-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.name-fields {
+  display: flex;
+  gap: 10px;
+}
+
+.name-fields input {
   flex: 1;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #cbd5e1;
-  font-size: 0.9rem;
-  outline: none;
-  transition: border-color 0.3s;
 }
 
-.patient-history button {
-  background: #3b82f6;
+.doctor-form input {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  width: 100%;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.doctor-form input:focus {
+  border-color: #6a5acd;
+}
+
+.doctor-form button {
+  /* margin-top: 10px; */
+  background: linear-gradient(135deg, #6a5acd, #8a7cf7);
+  color: #fff;
+  font-size: 1rem;
+  padding: 10px;
   border: none;
   border-radius: 6px;
-  padding: 8px 14px;
-  color: white;
-  font-weight: 600;
-  font-size: 0.9rem;
   cursor: pointer;
   transition: background 0.3s;
 }
+
+.doctor-form button:hover {
+  background: linear-gradient(135deg, #5b4bd8, #7762f1);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 1);
+}
+
+
+
+/* Patient history view button  */
+
+
+
 
 
 

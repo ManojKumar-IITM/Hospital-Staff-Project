@@ -26,14 +26,14 @@
                 <div class="statboxupper">
                     <h4 class="icon"><i class="fa-solid fa-user-doctor stat-icon"></i></h4>
                     <div class="statdetails">
-                        <h4 >Registered Doctors</h4>
+                        <h4>Registered Doctors</h4>
                         <h5>{{total_doctors}}</h5> 
                     </div>
-                    <button id="doctorviewallbutton">Register Doctor</button>   
+                    <button id="registerbutton">Register Doctor</button>   
                 </div>
                 <div class="statboxlower">
                     {% for doctor in doctors %}
-                        <div class="doclist" >
+                        <div class="divlist" >
                             <h6>{{doctor.first_name}}</h6>
                             <div class="doclistbutton">
                                 <button style="color: rgb(255, 255, 3); background-color: rgba(227, 227, 54, 0.1); border: 2px solid yellow ">edit</button>
@@ -57,11 +57,11 @@
                         <h4>Registered Patients</h4>
                         <h5>{{total_patients}}</h5>
                     </div>
-                    <button id="doctorviewallbutton">Register Patient</button> 
+                    <button id="registerbutton">Register Patient</button> 
                 </div>
                 <div class="statboxlower">
                     {% for patient in patients %}
-                        <div class="doclist" >
+                        <div class="divlist" >
                             <h6>{{patient.first_name}}</h6>
                             <div class="doclistbutton">
                                 <button style="color: rgb(255, 255, 3); background-color: rgba(227, 227, 54, 0.1); border: 2px solid yellow ">edit</button>
@@ -77,36 +77,69 @@
                 
             
             
-            <div class="statbox">
-                <div class="statboxupper">
+            <div class="statbox appointments">
+                <div class="statboxupper appointmentupper">
                     <h4 class="icon"><i class="fa-regular fa-calendar-check stat-icon"></i></h4>
                     <div class="statdetails">
                         <h4>Today's Appointments</h4>
                         
                     </div>
                 </div>
-                <div class="statboxlower">
-                    <h6>No Appointments yet...</h6>
+                <div class="statboxlower appointmentlower">
+                    <table border="1">
+                            <tr>
+                                <th>S.NO.</th>
+                                <th>Appointment ID</th>
+                                <th>Doctor Name</th>
+                                <th>Patient Name</th>
+                                <th>Department</th>
+                                <th>Patient History</th>
+                            </tr>
+                        {% for appointment in Appointments %}
+                            <tr>
+                                <td>{{loop.index}}</td>
+                                <td>{{appointment.appointment_id}}</td>
+                                <td>{{appointment.doctor.first_name}}</td>
+                                <td>{{appointment.patient.first_name}}</td>
+                                <td>None</td>
+                                <td><button class="patienthistorybutton">View</button></td>
+                            </tr>
+                            
+                        {%endfor%}
+                    </table>
                 </div>
             </div>
-            
-            
-                
-            
-            
-            <div class="statbox">
-                <div class="statboxupper">
-                    <h4 class="icon"><i class="fa-solid fa-file-lines stat-icon"></i></h4>
-                    <div class="statdetails">
-                        <h4>Pending Reviews</h4>
-                        
-                    </div>
+                     
+    </section>
+
+    <section class="additional-cards">
+
+        <div class="lowercards adddoctor">
+                <div class="doctor-icon">
+                    <img src="https://cdn-icons-png.flaticon.com/512/387/387561.png" alt="Doctor Icon" />
                 </div>
-                <div class="statboxlower">
-                    <h6> No Review yet...</h6>
+
+                <div class="doctor-form">
+                    <h2>Register a new Doctor</h2>
+                    <form>
+                        <div class="name-fields">
+                            <input type="text" placeholder="First Name" required />
+                            <input type="text" placeholder="Last Name" required />
+                        </div>
+                        <input type="email" placeholder="Email Address" required />
+                        <input type="date" placeholder="Date of Birth" required />
+                        <input type="text" placeholder="Specialization" required />
+                        <input type="tel" placeholder="Contact No." required />
+                        <button type="submit">Register</button>
+                    </form>
                 </div>
-            </div>
-                 
+
+        </div>
+
+        <div class="lowercards patienthistory">
+
+        </div>
+
     </section>
 
 

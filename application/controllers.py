@@ -1,5 +1,5 @@
 from flask import Flask,request,render_template,Blueprint,flash,redirect,url_for,session
-from .models import Members
+from .models import Members,Appointments
 from .database import db
 
 
@@ -87,6 +87,7 @@ def admin():
         total_patients = Members.query.filter_by(role='patient').count()
         doctors= Members.query.filter_by(role='doctor')
         patients= Members.query.filter_by(role='patient')
+        appointments = Appointments.query.filter_by(status='Booked')
         
         return render_template('admin.html',
                                username=username,
@@ -94,7 +95,8 @@ def admin():
                                total_doctors=total_doctors,
                                total_patients=total_patients,
                                doctors=doctors,
-                               patients=patients)
+                               patients=patients,
+                               Appointments=appointments)
         
     
 
