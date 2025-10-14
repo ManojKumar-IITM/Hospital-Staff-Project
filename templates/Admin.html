@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %} 
-    {{username}} 
+    Admin Dashboard
 {% endblock %}
 
 
@@ -101,8 +101,8 @@
                                 <td>{{appointment.appointment_id}}</td>
                                 <td>{{appointment.doctor.first_name}}</td>
                                 <td>{{appointment.patient.first_name}}</td>
-                                <td>None</td>
-                                <td><button class="patienthistorybutton">View</button></td>
+                                <td>{{appointment.department.department_name}}</td>
+                                <td><button class="patienthistorybutton" data-patient-id="{{appointment.patient_id}}" data-doctor-id="{{appointment.doctor_id}}">View</button></td>
                             </tr>
                             
                         {%endfor%}
@@ -121,15 +121,15 @@
 
                 <div class="doctor-form">
                     <h2>Register a new Doctor</h2>
-                    <form>
+                    <form method="POST">
                         <div class="name-fields">
-                            <input type="text" placeholder="First Name" required />
-                            <input type="text" placeholder="Last Name" required />
+                            <input type="text" name="doctor_first_name" placeholder="First Name" required />
+                            <input type="text" name="doctor_last_name" placeholder="Last Name" required />
                         </div>
-                        <input type="email" placeholder="Email Address" required />
-                        <input type="date" placeholder="Date of Birth" required />
-                        <input type="text" placeholder="Specialization" required />
-                        <input type="tel" placeholder="Contact No." required />
+                        <input type="text"   name="username" placeholder="username" required />
+                        <input type="password" name="password" placeholder="Password" required />
+                        <input type="date"  name="DOB" placeholder="Date of Birth"  />
+                        <input type="text"  name="doctor_department" placeholder="Specialization" required />
                         <button type="submit">Register</button>
                     </form>
                 </div>
@@ -137,10 +137,54 @@
         </div>
 
         <div class="lowercards patienthistory">
+                <div class="patienthistoryheader">
+                    <h4>Patient History</h4>
+                    <button id="back-btn">Back</button>
+                </div>
+                
+
+                <div>
+                    <div class="appointmentdetails">
+                        <h5>Doctor Name :</h5>
+                        <h6 id="doctorname"></h6>
+                    </div>
+                    
+                    <div class="appointmentdetails">
+                        <h5>Patient Name :</h5>
+                        <h6 id="patientname"></h6>
+                    </div>
+                    <div class="appointmentdetails">
+                        <h5>Department :</h5>
+                        <h6 id="departmentname"></h6>
+                    </div>
+                </div>
+
+                <div class="historydata">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Visit No.</th>
+                                <th>Visit Type</th>
+                                <th>Test Done</th>
+                                <th>Diagnosis</th>
+                                <th>Prescription</th>
+                                <th>Medicines</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="patienthistorytable">
+
+                        </tbody>
+                    </table> 
+                </div>
 
         </div>
 
     </section>
+
+    {% block js %}
+    <script src="{{url_for('static',filename='js/admin.js')}}"></script>
+    {% endblock %}
 
 
 

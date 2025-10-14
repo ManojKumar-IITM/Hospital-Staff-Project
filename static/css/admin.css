@@ -148,9 +148,7 @@ color: rgb(6, 0, 0)
   border: 2px solid green;
 }
 
-.appointmentlower {
-   
-}
+
 
 .patienthistorybutton {
     padding: 3px 5px 3px 5px;
@@ -213,7 +211,7 @@ table th ,td {
   
 }
 
-.lowercards {
+.adddoctor {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -314,7 +312,45 @@ table th ,td {
 
 
 /* Patient history view button  */
+.patienthistoryheader{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
+.patienthistoryheader button {
+    padding: 3px 5px 3px 5px;
+    border-radius: 10px;
+    border: 2px solid blue;
+    color: blue;
+    background-color: rgb(59, 2, 244,0.1);
+}
+
+.patienthistoryheader button:hover {
+    box-shadow: 0 4px 10px rgba(8, 1, 21, 0.7);
+}
+
+.patienthistory {
+  display: flex;
+  flex-direction: Column;
+  background-color: #f3f4f6;
+  padding:  32px  ;
+  margin: 10px 0 0 0px;
+  min-height: 350px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.4);
+  gap: 30px;
+  display: none;
+  
+}
+
+.appointmentdetails {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+
+}
 
 
 

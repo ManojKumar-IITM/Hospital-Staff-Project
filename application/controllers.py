@@ -1,5 +1,5 @@
-from flask import Flask,request,render_template,Blueprint,flash,redirect,url_for,session
-from .models import Members,Appointments
+from flask import Flask,request,render_template,Blueprint,flash,redirect,url_for,session,jsonify
+from .models import Members,Appointments,Department,Treatment
 from .database import db
 
 
@@ -81,13 +81,17 @@ def signup():
 def admin():
 
     if request.method=='GET':
+        #for registered doctor and patient div
         username= session['username']
         first_name= session.get('firstname')
         total_doctors = Members.query.filter_by(role='doctor').count()
         total_patients = Members.query.filter_by(role='patient').count()
         doctors= Members.query.filter_by(role='doctor')
         patients= Members.query.filter_by(role='patient')
-        appointments = Appointments.query.filter_by(status='Booked')
+        appointments = Appointments.query.filter_by(status='booked').all()
+
+
+
         
         return render_template('admin.html',
                                username=username,
@@ -97,8 +101,57 @@ def admin():
                                doctors=doctors,
                                patients=patients,
                                Appointments=appointments)
+    
+    elif request.method=="POST":
+
+        doctor_first_name=request.form.get('doctor_first_name')
+        doctor_last_name=request.form.get('doctor_last_name')
+        doctor_username=request.form.get('username')
+        doctor_dob=request.form.get('DOB')
+        doctor_department=request.form.get('doctor_department')
+        doctor_password=request.form.get('password')
+
+        new_doctor = Members(
+                             first_name=doctor_first_name,
+                             last_name=doctor_last_name,
+                             username= doctor_username,
+                             password=doctor_password,
+                             role='doctor'
+                             
+        )
+
+        try: 
+            db.session.add(new_doctor)
+            db.session.commit()
+            flash('Doctor added successfully!', 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash('AN error occurred:' + str(e), 'error')
+        return redirect(url_for('controllers.admin'))
+
+       
         
     
+
+@controllers.route('/get-patient-history/<int:patientId>/<int:doctorId>' , methods=['GET'])
+def get_patient_history(patientId,doctorId):
+
+    patient_history = Treatment.query.filter_by(patient_id=patientId).all()
+    patient         = Members.query.filter_by(id=patientId).first()
+    doctor          = Members.query.filter_by(id=doctorId).first()
+    department      = Department.query.filter_by(doctor_id=doctorId).first()
+
+
+    return  jsonify({
+        'patient_history': [h.serialize() for h in patient_history],
+        'patient'        : patient.serialize() if patient else {},
+        'doctor'         : doctor.serialize() if doctor else {},
+        'department'     : department.serialize() if department else {},
+    })
+
+
+
+
 
 @controllers.route('/Doctor', methods=['GET','POST'])
 def doctor():
