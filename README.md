@@ -15,4 +15,6 @@ This is a Dummy project for Hospital, where doctors and patients can check their
 
 => Added Database & Signup(Registration for Patient) working  😁
 
+=> Completed Doctor's dashboard
+
 
