@@ -1,6 +1,7 @@
 from flask import Flask,request,render_template,Blueprint,flash,redirect,url_for,session,jsonify
-from .models import Members,Appointments,Department,Treatment
+from .models import Members,Appointments,Department,Treatment,Availability
 from .database import db
+from datetime import datetime,timedelta
 
 
 
@@ -156,10 +157,111 @@ def get_patient_history(patientId,doctorId):
 @controllers.route('/Doctor', methods=['GET','POST'])
 def doctor():
 
+    username= session['username']
+    doctor = Members.query.filter_by(username=username).first()
+
     if request.method=='GET':
-        username= session['username']
-        return render_template('doctor.html',username=username)
+        
+        next_7_days = [(datetime.now() + timedelta(days=i)).strftime('%d-%m-%Y') for i in range(7)]
+        appointments= Appointments.query.filter_by(doctor_id=doctor.id,status='booked').all()
+        all_appointments=Appointments.query.filter_by(doctor_id=doctor.id).all()
+        department = Department.query.filter_by(doctor_id=doctor.id).first()
+
+
+
     
+    
+        return render_template('doctor.html',
+                               username=username,
+                               days=next_7_days,
+                               appointments=appointments,
+                               all_appointments=all_appointments,
+                               department=department)
+    
+    elif request.method=='POST':
+        
+
+        try:
+            data=request.get_json()
+            slots=data.get('slots',[])
+            doctor_id=doctor.id
+
+            for slot in slots:
+                date= slot['date']
+                date_obj= datetime.strptime(date,'%d-%m-%Y').date()
+                slot= slot['slot']
+
+                existing_entry = Availability.query.filter_by(doctor_id=doctor_id, date=date_obj).first()
+
+                if existing_entry:
+                    existing_entry.time_slot=slot
+                    db.session.commit()
+                else:
+                    new_availability = Availability(
+                        doctor_id=doctor_id,
+                        date=date_obj,
+                        time_slot=slot
+                    )
+                    db.session.add(new_availability)
+            db.session.commit()
+            return jsonify({'message':'Availability saved successfully!'}),200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'message':'An error occurred: ' + str(e)}),500
+        
+
+@controllers.route('/save_treatment',methods=['POST'])
+def save_treatment():
+    try:
+
+        data = request.get_json()
+        appointment_id = data.get('appointment_id')
+        patient_id     = data.get('patient_id')
+
+        treatment= Treatment.query.filter_by(appointment_id=appointment_id,patient_id=patient_id).first()
+        if treatment:
+            if 'visit_type' in data: treatment.visittype = data['visit_type']
+            if 'test_done' in data: treatment.testdone = data['test_done']
+            if 'diagnosis' in data: treatment.diagnosis = data['diagnosis']
+            if 'prescription' in data: treatment.prescription = data['prescription']
+            if 'notes' in data: treatment.notes = data['notes']
+            db.session.commit()
+            return jsonify({'success': True, 'message': 'Updated existing treatment!'}), 200
+        else:
+            new_treatment = Treatment(
+                appointment_id=appointment_id,
+                patient_id=patient_id,
+                visittype=data.get('visittype'),
+                testdone=data.get('testdone'),
+                diagnosis=data.get('diagnosis'),
+                prescription=data.get('prescription'),
+                notes=data.get('notes'))
+
+            db.session.add(new_treatment)
+            db.session.commit()
+            return jsonify({'success': True}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+    
+
+@controllers.route('/mark_appointment_complete', methods=['POST'])
+def mark_appointment_complete():
+    try:
+        data = request.get_json()
+        appointment_id = data.get('appointment_id')
+
+        appointment = Appointments.query.filter_by(appointment_id=appointment_id).first()
+        if appointment:
+            appointment.status = 'completed'
+            db.session.commit()
+            return jsonify({'success': True}), 200
+        else:
+            return jsonify({'success': False, 'error': 'Appointment not found'}), 404
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @controllers.route('/Patient', methods=['GET','POST'])
 def patient():

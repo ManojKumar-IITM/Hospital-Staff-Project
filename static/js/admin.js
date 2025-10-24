@@ -40,3 +40,10 @@ document.querySelector('#back-btn').addEventListener('click', function() {
   document.querySelector('.patienthistory').style.display = 'none';
 });
 
+
+const logoutbtn= document.querySelector('#logoutbutton')
+
+logoutbtn.addEventListener('click', function(){
+  sessionStorage.clear();
+  window.location.href='/';
+})

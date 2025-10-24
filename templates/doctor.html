@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+{% block title %} 
+    Doctor's Dashboard
+{% endblock %}
+
+
+{% block link %}
+    <link rel="stylesheet" href="{{url_for('static',filename='css/doctor.css')}}">
+{% endblock %}
+
+{% block content %}
+   <header>
+        <div class="header">
+            <h4>Doctor's Dashboard</h4>
+            <button id="logoutbtn">Log out</button>
+        </div>
+   </header>
+
+   <section class="welcome">
+       <div class="container">
+            <div class="commondiv">
+                <img src="{{url_for('static',filename="images/doctor_image.png")}}" alt="doctor_image">
+            </div>
+
+            <div class="commondiv">
+                <h4>Welcome,</h4>
+                <h2>Dr. {{username}}</h2>
+                <h5>{{department.department_name}}</h5>
+                <button id="availability-btn">Provide availability</button>
+            </div>
+        </div>
+
+        <div class="welcomecontainer">
+            <div  id="upcomingappointments">
+                <h4>Upcoming Appointments</h4>
+                <div class="UA-table-div">
+                    <table class="UA-table" border="1">
+                            <tr>
+                                <th>S.NO.</th>
+                                <th>Patient Name</th>
+                                <th>Patient History</th>
+                                <th>Actions</th>
+                            </tr>
+                        {% for appointment in appointments %}
+                            <tr>
+                                <td>{{loop.index}}</td>
+                                <td>{{appointment.patient.first_name}}</td>
+                                <td><button class="UA-patient-history-update-btn"
+                                            data-patient_id="{{appointment.patient.id}}"
+                                            data-patient_name="{{appointment.patient.first_name}}" 
+                                            data-department_name="{{appointment.department.department_name}}" 
+                                            data-appointment_id="{{appointment.appointment_id}}"
+                                            >Update
+                                    </button>
+                                </td>
+                                <td>
+                                    <div id="UA-table-action-btns">
+                                        <button class="UA-mark_as_complete-btn" data-appointment_id="{{appointment.appointment_id}}">Mark as Complete</button>
+                                        <button class="UA-cancel-btn">Cancel</button>
+                                    </div>
+                                </td>
+                                
+                            </tr>
+                            
+                        {%endfor%}
+                    </table>
+                </div>
+            </div>
+
+            <div id="assignedpatients">
+                <h4>Assigned Patient</h4>
+                <div class="AP-table-div">
+                    <table class="AP-table" border="1">
+                            <tr>
+                                <th>S.NO.</th>
+                                <th>Patient Name</th>
+                                
+                                <th>Patient History</th>
+                            </tr>
+                        {% for appointment in all_appointments %}
+                            <tr>
+                                <td>{{loop.index}}</td>
+                                <td>Mr. {{appointment.patient.first_name}}</td>
+                                
+                                <td><button class="AP-patient-history-view-btn"
+                                            data-patient_id="{{appointment.patient.id}}"
+                                            data-patient_name="{{appointment.patient.first_name}}" 
+                                            data-department_name="{{appointment.department.department_name}}" 
+                                            data-appointment_id="{{appointment.appointment_id}}"
+                                            data-doctor_id="{{appointment.doctor.id}}"
+                                            >View
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                        {%endfor%}
+                    </table>
+            </div>
+        </div>
+        
+   </section>
+
+   <section class="reappearing-cards">
+        <div class="updatepatienthistory">
+            <div id="uph-header">
+                <h2>Update Patient History</h2>
+                <button id="uph-back-btn">Back</button>
+            </div>
+            <div class="uph-details">
+                <h5 id="uph-patient_name">Patient Name:</h5>
+                <h5 id="uph-department">Department:</h5> 
+            </div>
+
+            <div class="uph-form">
+                <form method="POST">
+                    <div class="uph-sideplacer1">
+                        <div class="uph-downplacer1">
+                            <label for="Visit Type">Visit Type</label>
+                            <input type="text"  id="visittype" name="visittype">
+                        </div>
+                        <div class="uph-downplacer1">
+                            <label for="Test done">Test Done</label>
+                            <input type="text" id="testdone" name="testdone">
+                        </div>
+                    </div>
+
+                    <div class="uph-sideplacer1">
+                        <div class="uph-downplacer1">
+                            <label for="Diagnosis">Diagnosis</label>
+                            <input type="text" id="diagnosis" name="diagnosis">
+                            <label for="Prescription">Prescription</label>
+                            <input type="text" id="prescription" name="prescription">   
+                        </div>
+                        <div class="uph-downplacer1 notes">
+                            <label for="notes">Notes</label>
+                            <textarea id="notes" name="notes" rows="4" cols="30"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="uph-button save-btn">
+                        <button id="savehistorybtn" type="submit">Save History</button>
+                    </div>
+                </form>
+
+            </div>
+
+            
+
+        </div>
+
+        
+
+        <div class="doctoravailability">
+            <div id="da-header">
+                <h2>Doctor's Availability</h2>
+                <button id="da-back-btn">Back</button>
+            </div>
+            
+
+            <form id="availability-boxes" method="[POST]" action="/doctor">
+                {% for day in days %}
+                    <div class="da-sideplacer">
+                        <label for="date">{{day}}</label>
+                        <button class="slot-btn" data-date="{{day}}" data-slot="morning">08:00 - 12:00 am</button>
+                        <button class="slot-btn" data-date="{{day}}" data-slot="evening">04:00 - 09:00 pm</button>
+                    </div>
+                {% endfor %}  
+            </form>
+            <div id="save-btn-div">
+                <button id="save-btn">Save</button>
+            </div>
+        </div>
+
+        <!-- //patient history -->
+        <div class="patienthistory">
+            <div class="PH-header">
+                    <h4>Patient History</h4>
+                    <button id="PH-back-btn">Back</button>
+            </div>
+                
+
+            <div class="PH-details">
+                    <div class="PH-appointmentdetails">
+                        <h5>Doctor Name :</h5>
+                        <h6 id="doctorname"></h6>
+                    </div>
+                    
+                    <div class="PH-appointmentdetails">
+                        <h5>Patient Name :</h5>
+                        <h6 id="patientname"></h6>
+                    </div>
+                    <div class="PH-appointmentdetails">
+                        <h5>Department :</h5>
+                        <h6 id="departmentname"></h6>
+                    </div>
+            </div>
+
+            <div class="PH-table-div">
+                    <table class="PH-table" border="1">
+                        <thead>
+                            <tr>
+                                <th>Visit No.</th>
+                                <th>Visit Type</th>
+                                <th>Test Done</th>
+                                <th>Diagnosis</th>
+                                <th>Prescription</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="PH-table-body">
+
+                        </tbody>
+                    </table> 
+            </div>
+        </div>
+
+        
+   </section>
+
+   <footer>
+
+   </footer>
+{% endblock %}
+
+
+{% block js %}
+<script src="{{url_for('static',filename='js/doctor.js')}}"></script>
+{% endblock %}
+

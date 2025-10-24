@@ -10,7 +10,7 @@ class Members(db.Model):
     id        = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name= db.Column(db.Text)
     last_name = db.Column(db.Text)
-    username  = db.Column(db.Text   , nullable  =False)
+    username  = db.Column(db.Text   , nullable  =False,unique=True)
     password  = db.Column(db.Text   , nullable  =False)
     role      = db.Column(db.Text   , nullable  =False)
 
@@ -86,6 +86,23 @@ class Department (db.Model):
             "description": self.description,
             "doctor_id": self.doctor_id,
             "doctor": self.doctor.serialize() if self.doctor else None
+        }
+    
+
+class Availability (db.Model):
+    __tablename__ = 'Availability'
+    id =            db.Column(db.Integer, primary_key=True, autoincrement=True)
+    doctor_id =     db.Column(db.Integer, db.ForeignKey('Members.id'), nullable=False)
+    date =          db.Column(Date, nullable=False)
+    time_slot =     db.Column(db.Text, nullable=False)
+    doctor =        db.relationship('Members', backref='doctor_availability')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "doctor_id": self.doctor_id,
+            "date": self.date.isoformat() if self.date else None,
+            "time_slot": self.time_slot,
         }
 
 
